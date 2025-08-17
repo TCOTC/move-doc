@@ -2,7 +2,7 @@
   "name": "move-doc",
   "author": "TCOTC",
   "url": "https://github.com/TCOTC/move-doc",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "minAppVersion": "3.2.1",
   "backends": [
     "all"
@@ -11,10 +11,10 @@
     "all"
   ],
   "displayName": {
-    "default": "Move Doc",
-    "zh_CN": "移动文档",
-    "zh_TW": "移動文檔",
-    "ja_JP": "ドキュメント移動"
+    "default": "Move Current Doc",
+    "zh_CN": "移动当前文档",
+    "zh_TW": "移動當前文檔",
+    "ja_JP": "現在のドキュメントを移動"
   },
   "description": {
     "default": "Move the current document to the specified position in the document tree",
@@ -33,5 +33,8 @@
       "https://bento.me/jeffff"
     ]
   },
-  "keywords": []
+  "keywords": [
+    "move to this document",
+    "move to this notebook"
+  ]
 }
