@@ -5,12 +5,17 @@ import {
     fetchSyncPost,
     Wnd,
     Layout,
-    Tab
+    Tab,
+    getFrontend
 } from "siyuan";
 import "./index.scss";
 
 export default class PluginSample extends Plugin {
+    isMobile: boolean;
+
     onload() {
+        const frontEnd = getFrontend();
+        this.isMobile = frontEnd === "mobile" || frontEnd === "browser-mobile";
         // "open-menu-doctree": {
         //     menu: subMenu,
         //     elements: NodeListOf<HTMLElement>,
@@ -109,31 +114,40 @@ export default class PluginSample extends Plugin {
     // };
     // TODO跟进: 原生函数获取当前文档 ID https://github.com/siyuan-note/siyuan/issues/15415
     getCurrentDocParams = (): { path: string, notebookId: string } | false => {
-        let element = document.querySelector(".layout__wnd--active > .fn__flex > .layout-tab-bar > .item--focus") as HTMLElement;
-        if (!element) {
-            document.querySelectorAll("ul.layout-tab-bar > .item--focus").forEach((item: HTMLElement, index) => {
-                if (index === 0) {
-                    element = item;
-                } else if (item.dataset.activetime > element.dataset.activetime) {
-                    element = item;
-                }
-            });
-        }
+        if (this.isMobile) {
+            if (window.siyuan.mobile.editor && window.siyuan.mobile.editor.protyle) {
+                return {
+                    path: window.siyuan.mobile.editor.protyle.path,
+                    notebookId: window.siyuan.mobile.editor.protyle.notebookId
+                };
+            }
+        } else {
+            let element = document.querySelector(".layout__wnd--active > .fn__flex > .layout-tab-bar > .item--focus") as HTMLElement;
+            if (!element) {
+                document.querySelectorAll("ul.layout-tab-bar > .item--focus").forEach((item: HTMLElement, index) => {
+                    if (index === 0) {
+                        element = item;
+                    } else if (item.dataset.activetime > element.dataset.activetime) {
+                        element = item;
+                    }
+                });
+            }
 
-        if (element) {
-            const tab = this.getInstanceById(element.getAttribute("data-id")) as Tab;
-            // 页签有可能不是文档页签
-            if (tab && tab.model && typeof tab.model === 'object' && 'editor' in tab.model) {
-                const model = tab.model as any;
-                if (model.editor && model.editor.protyle) {
-                    return {
-                        path: model.editor.protyle.path,
-                        notebookId: model.editor.protyle.notebookId
-                    };
+            if (element) {
+                const tab = this.getInstanceById(element.getAttribute("data-id")) as Tab;
+                // 页签有可能不是文档页签
+                if (tab && tab.model && typeof tab.model === 'object' && 'editor' in tab.model) {
+                    const model = tab.model as any;
+                    if (model.editor && model.editor.protyle) {
+                        return {
+                            path: model.editor.protyle.path,
+                            notebookId: model.editor.protyle.notebookId
+                        };
+                    }
                 }
             }
+            return false;
         }
-        return false;
     };
 
     // 原生方法，不保证未来一直兼容

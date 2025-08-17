@@ -20,11 +20,6 @@ module.exports = (env, argv) => {
         entry = {
             "dist/index": "./src/index.ts",
         };
-        plugins.push(new webpack.BannerPlugin({
-            banner: () => {
-                return fs.readFileSync("LICENSE").toString();
-            },
-        }));
         plugins.push(new CopyPlugin({
             patterns: [
                 {from: "preview.png", to: "./dist/"},
