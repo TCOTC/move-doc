@@ -1,0 +1,37 @@
+{
+  "name": "move-doc",
+  "author": "TCOTC",
+  "url": "https://github.com/TCOTC/move-doc",
+  "version": "0.0.1",
+  "minAppVersion": "3.2.1",
+  "backends": [
+    "all"
+  ],
+  "frontends": [
+    "all"
+  ],
+  "displayName": {
+    "default": "Move Doc",
+    "zh_CN": "移动文档",
+    "zh_TW": "移動文檔",
+    "ja_JP": "ドキュメント移動"
+  },
+  "description": {
+    "default": "Move the current document to the specified position in the document tree",
+    "zh_CN": "将当前打开的文档移动到文档树指定位置",
+    "zh_TW": "將當前打開的文檔移動到文檔樹指定位置",
+    "ja_JP": "現在開いているドキュメントをドキュメントツリーの指定された位置に移動します"
+  },
+  "readme": {
+    "default": "README.md",
+    "zh_CN": "README_zh_CN.md",
+    "zh_TW": "README_zh_CHT.md",
+    "ja_JP": "README_ja_JP.md"
+  },
+  "funding": {
+    "custom": [
+      "https://bento.me/jeffff"
+    ]
+  },
+  "keywords": []
+}
