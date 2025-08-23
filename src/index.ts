@@ -76,8 +76,9 @@ export default class PluginSample extends Plugin {
 
     getCurrentDoc = (): { id: string, path: string, notebookId: string } | undefined => {
         // 原生函数获取当前文档 ID https://github.com/siyuan-note/siyuan/issues/15415
-        const protyle = getActiveEditor(false).protyle;
-        if (!protyle.block?.rootID || !protyle.path || !protyle.notebookId) return undefined;
+        const editor = getActiveEditor(false);
+        const protyle = editor?.protyle;
+        if (!protyle || !protyle.block?.rootID || !protyle.path || !protyle.notebookId) return undefined;
         return {
             id: protyle.block.rootID,
             path: protyle.path,
