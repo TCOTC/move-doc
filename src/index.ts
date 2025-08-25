@@ -1,12 +1,17 @@
 import {
     Plugin,
     Menu,
+    Setting,
     fetchPost,
     getActiveEditor
 } from "siyuan";
 // import "./index.scss";
 
+const STORAGE_NAME = "move-doc-config.json";
+
 export default class PluginSample extends Plugin {
+    public setting: Setting;
+
     async onload() {
         // "open-menu-doctree": {
         //     menu: subMenu,
@@ -14,6 +19,29 @@ export default class PluginSample extends Plugin {
         //     type: "doc" | "docs" | "notebook",
         // };
         this.eventBus.on('open-menu-doctree', this.openMenuDoctree);
+
+        await this.loadData(STORAGE_NAME);
+        this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc ??= true;
+
+        this.setting = new Setting({
+            confirmCallback: () => {
+                this.saveData(STORAGE_NAME, {expandDocTreeAfterMoveDoc: (document.getElementById("expandDocTreeAfterMoveDoc") as HTMLInputElement).checked});
+            }
+        });
+
+        this.setting.addItem({
+            // 移动文档之后展开文档树
+            title: this.i18n.expandDocTreeAfterMoveDoc,
+            direction: "column",
+            createActionElement: () => {
+                const input = document.createElement("input");
+                input.type = "checkbox";
+                input.classList.add("b3-switch", "fn__flex-center");
+                input.id = "expandDocTreeAfterMoveDoc";
+                input.checked = this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc;
+                return input;
+            }
+        });
     }
 
     // onLayoutReady() {
@@ -80,6 +108,10 @@ export default class PluginSample extends Plugin {
                     fromIDs: [currentDoc.id],
                     toID: targetId,
                 });
+                if (this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc) {
+                    // 移动文档之后展开文档树 https://github.com/TCOTC/move-doc/issues/2
+                    element.querySelector(".b3-list-item__toggle:has(svg.b3-list-item__arrow:not(.b3-list-item__arrow--open))")?.click();
+                }
             }
         });
     };
