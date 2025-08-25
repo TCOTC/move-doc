@@ -1,4 +1,5 @@
 {
   "moveToThisDoc": "移动到该文档",
-  "moveToThisNotebook": "移动到该笔记本"
+  "moveToThisNotebook": "移动到该笔记本",
+  "expandDocTreeAfterMoveDoc": "移动文档之后展开文档树"
 }

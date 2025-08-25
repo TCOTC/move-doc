@@ -1,4 +1,5 @@
 {
   "moveToThisDoc": "Move to this doc",
-  "moveToThisNotebook": "Move to this notebook"
+  "moveToThisNotebook": "Move to this notebook",
+  "expandDocTreeAfterMoveDoc": "Expand document tree after moving document"
 }
