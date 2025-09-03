@@ -110,6 +110,7 @@ export default class PluginSample extends Plugin {
                     toID: targetId,
                 });
                 // 等待文档移动完成之后才能展开文档树
+                await new Promise(resolve => setTimeout(resolve, 512));
 
                 // // TODO跟进: 没效果 https://github.com/siyuan-note/siyuan/issues/15617#issuecomment-3220161780
                 // const wait = await fetchSyncPost("/api/sqlite/flushTransaction");
@@ -117,35 +118,35 @@ export default class PluginSample extends Plugin {
 
                 // // await new Promise(resolve => setTimeout(resolve, 1000));
 
-                // let sortJson = await this.getFile(`/data/${boxID}/.siyuan/sort.json`);
-                // // 解析 json，结构是 `{"20250814155701-4i5l68u":10,"20250822181321-ateqaxg":8}`，把 currentDoc.id 加到里面，并且索引值要比最低的那个 -1
-                // // 解析 sortJson，如果为空则初始化为一个对象
-                // let sortObj: Record<string, number>;
-                // try {
-                //     sortObj = typeof sortJson === "string" ? JSON.parse(sortJson) : (sortJson || {});
-                // } catch (e) {
-                //     // 如果解析失败，则初始化为空对象
-                //     sortObj = {};
-                // }
+                let sortJson = await this.getFile(`/data/${boxID}/.siyuan/sort.json`);
+                // 解析 json，结构是 `{"20250814155701-4i5l68u":10,"20250822181321-ateqaxg":8}`，把 currentDoc.id 加到里面，并且索引值要比最低的那个 -1
+                // 解析 sortJson，如果为空则初始化为一个对象
+                let sortObj: Record<string, number>;
+                try {
+                    sortObj = typeof sortJson === "string" ? JSON.parse(sortJson) : (sortJson || {});
+                } catch (e) {
+                    // 如果解析失败，则初始化为空对象
+                    sortObj = {};
+                }
 
-                // // 获取当前所有索引的最小值
-                // let minIndex = 0;
-                // const values = Object.values(sortObj);
-                // if (values.length > 0) {
-                //     minIndex = Math.min(...values);
-                // }
-                // // 将 currentDoc.id 加入对象，索引值为 minIndex - 1
-                // // sortObj[currentDoc.id] = minIndex - 1;
+                // 获取当前所有索引的最小值
+                let minIndex = 0;
+                const values = Object.values(sortObj);
+                if (values.length > 0) {
+                    minIndex = Math.min(...values);
+                }
+                // 将 currentDoc.id 加入对象，索引值为 minIndex - 1
+                sortObj[currentDoc.id] = minIndex - 1;
                 // sortObj[currentDoc.id] = 100;
 
-                // // 赋值回 sortJson
-                // sortJson = sortObj;
-                // // console.log("sortJson", sortJson);
-                // // console.log("/data/${boxID}/.siyuan/sort.json", `/data/${boxID}/.siyuan/sort.json`);
-                // const response = await this.putFile(`/data/${boxID}/.siyuan/sort.json`, sortJson);
-                // // const response2 = await this.putFile(`/data/${boxID}/.siyuan/sort2.json`, sortJson);
-                // // console.log("response", response);
-                // // console.log("response2", response2);
+                // 赋值回 sortJson
+                sortJson = sortObj;
+                // console.log("sortJson", sortJson);
+                // console.log("/data/${boxID}/.siyuan/sort.json", `/data/${boxID}/.siyuan/sort.json`);
+                const response = await this.putFile(`/data/${boxID}/.siyuan/sort.json`, sortJson);
+                // const response2 = await this.putFile(`/data/${boxID}/.siyuan/sort2.json`, sortJson);
+                console.log("response", response);
+                // console.log("response2", response2);
 
                 if (this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc) {
                     // 移动文档之后展开文档树 https://github.com/TCOTC/move-doc/issues/2
