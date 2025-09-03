@@ -39,8 +39,8 @@ importers:
         specifier: ^12.6.0
         version: 12.6.0(sass@1.90.0)(webpack@5.101.3)
       siyuan:
-        specifier: github:siyuan-note/petal#3076bfbbff6110c098472046350cba4cb9f178e0
-        version: https://codeload.github.com/siyuan-note/petal/tar.gz/3076bfbbff6110c098472046350cba4cb9f178e0
+        specifier: github:siyuan-note/petal#888535dfe0c0f53bb15a456896f9ee3fe8038921
+        version: https://codeload.github.com/siyuan-note/petal/tar.gz/888535dfe0c0f53bb15a456896f9ee3fe8038921
       tslib:
         specifier: 2.4.0
         version: 2.4.0
@@ -1244,9 +1244,9 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/3076bfbbff6110c098472046350cba4cb9f178e0:
-    resolution: {tarball: https://codeload.github.com/siyuan-note/petal/tar.gz/3076bfbbff6110c098472046350cba4cb9f178e0}
-    version: 1.1.2
+  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/888535dfe0c0f53bb15a456896f9ee3fe8038921:
+    resolution: {tarball: https://codeload.github.com/siyuan-note/petal/tar.gz/888535dfe0c0f53bb15a456896f9ee3fe8038921}
+    version: 1.1.4
 
   slash@4.0.0:
     resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
@@ -2511,7 +2511,7 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/3076bfbbff6110c098472046350cba4cb9f178e0: {}
+  siyuan@https://codeload.github.com/siyuan-note/petal/tar.gz/888535dfe0c0f53bb15a456896f9ee3fe8038921: {}
 
   slash@4.0.0: {}
 

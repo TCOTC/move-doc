@@ -2,10 +2,11 @@ import {
     Plugin,
     Menu,
     Setting,
-    fetchPost,
-    getActiveEditor
+    fetchSyncPost,
+    getActiveEditor,
+    expandDocTree,
 } from "siyuan";
-// import "./index.scss";
+import "./index.scss";
 
 const STORAGE_NAME = "move-doc-config.json";
 
@@ -43,9 +44,6 @@ export default class PluginSample extends Plugin {
             }
         });
     }
-
-    // onLayoutReady() {
-    // }
 
     onunload() {
         this.eventBus.off('open-menu-doctree', this.openMenuDoctree);
@@ -104,13 +102,14 @@ export default class PluginSample extends Plugin {
             icon: "iconMove",
             label: this.i18n[`moveToThis${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}`],
             click: async () => {
-                fetchPost('/api/filetree/moveDocsByID', {
+                await fetchSyncPost('/api/filetree/moveDocsByID', {
                     fromIDs: [currentDoc.id],
                     toID: targetId,
                 });
+                // 等待文档移动完成之后才能展开文档树
                 if (this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc) {
                     // 移动文档之后展开文档树 https://github.com/TCOTC/move-doc/issues/2
-                    element.querySelector(".b3-list-item__toggle:has(svg.b3-list-item__arrow:not(.b3-list-item__arrow--open))")?.click();
+                    expandDocTree({ id: currentDoc.id });
                 }
             }
         });
