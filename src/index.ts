@@ -62,7 +62,7 @@ export default class PluginSample extends Plugin {
         if (!currentDoc) {
             // 当前文档不存在
             return;
-        };
+        }
         let targetId: string;
 
         // doc: 单个文档；docs: 多个文档 / 文档与笔记本混合；notebook: 单个笔记本
@@ -71,7 +71,7 @@ export default class PluginSample extends Plugin {
             if (!targetDocId || currentDoc.path.slice(-48).includes(targetDocId)) {
                 // 排除当前文档、父文档
                 return;
-            };
+            }
             targetId = targetDocId;
             // TODO跟进: 目前不支持使用异步操作 https://github.com/siyuan-note/siyuan/issues/15676
             // const targetDocInfo = await fetchSyncPost("/api/block/getBlockInfo", { id: targetDocId });
@@ -84,13 +84,13 @@ export default class PluginSample extends Plugin {
             if (!targetDocPath || targetDocPath.includes(currentDoc.id)) {
                 // 排除子文档
                 return;
-            };
+            }
         } else if (type === "notebook") {
             const targetNotebookId = element?.parentElement?.getAttribute('data-url');
             if (!targetNotebookId || (currentDoc.notebookId === targetNotebookId && currentDoc.path.length <= 26)) {
                 // 如果文档在笔记本根目录的话需要排除当前笔记本
                 return;
-            };
+            }
             targetId = targetNotebookId;
         } else {
             // 不支持其他类型
