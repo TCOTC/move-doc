@@ -10,6 +10,7 @@
   "frontends": [
     "all"
   ],
+  "disabledInPublish": true,
   "displayName": {
     "default": "Move Current Doc",
     "zh_CN": "移动当前文档",
