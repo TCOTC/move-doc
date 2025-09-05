@@ -1,5 +1,8 @@
 {
   "moveToThisDoc": "このドキュメントに移動",
   "moveToThisNotebook": "このノートブックに移動",
-  "expandDocTreeAfterMoveDoc": "ドキュメント移動後にドキュメントツリーを展開"
+  "expandDocTreeAfterMoveDoc": "ドキュメント移動後にドキュメントツリーを展開",
+  "moveDocFailed": "ドキュメント移動に失敗しました",
+  "getPathByIDFailed": "ドキュメントパス取得に失敗しました",
+  "getDocsByPathFailed": "パスからドキュメント取得に失敗しました"
 }

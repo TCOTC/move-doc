@@ -1,5 +1,8 @@
 {
   "moveToThisDoc": "Move to this doc",
   "moveToThisNotebook": "Move to this notebook",
-  "expandDocTreeAfterMoveDoc": "Expand document tree after moving document"
+  "expandDocTreeAfterMoveDoc": "Expand document tree after moving document",
+  "moveDocFailed": "Failed to move document",
+  "getPathByIDFailed": "Failed to get document path",
+  "getDocsByPathFailed": "Failed to get documents by path"
 }

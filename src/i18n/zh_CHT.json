@@ -1,5 +1,8 @@
 {
   "moveToThisDoc": "移動到該文檔",
   "moveToThisNotebook": "移動到該筆記本",
-  "expandDocTreeAfterMoveDoc": "移動文檔之後展開文檔樹"
+  "expandDocTreeAfterMoveDoc": "移動文檔之後展開文檔樹",
+  "moveDocFailed": "移動文檔失敗",
+  "getPathByIDFailed": "獲取文檔路徑失敗",
+  "getDocsByPathFailed": "通過路徑獲取文檔失敗"
 }
