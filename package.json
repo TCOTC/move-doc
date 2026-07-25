@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint . --fix --cache",
     "dev": "webpack --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "push": "git push origin HEAD --tags"
   },
   "keywords": [],
   "author": "TCOTC",
