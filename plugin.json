@@ -1,9 +1,9 @@
 {
   "name": "move-doc",
-  "author": "TCOTC",
+  "author": "Jeffrey Chen",
   "url": "https://github.com/TCOTC/move-doc",
-  "version": "0.0.2",
-  "minAppVersion": "3.2.1",
+  "version": "0.1.0",
+  "minAppVersion": "3.7.4-alpha.1",
   "backends": [
     "all"
   ],
@@ -13,29 +13,21 @@
   "disabledInPublish": true,
   "displayName": {
     "default": "Move Current Doc",
-    "zh_CN": "移动当前文档",
-    "zh_TW": "移動當前文檔",
-    "ja_JP": "現在のドキュメントを移動"
+    "zh-CN": "移动当前文档",
+    "zh-TW": "移動當前文檔",
+    "ja": "現在のドキュメントを移動"
   },
   "description": {
     "default": "Move the current document to the specified position in the document tree",
-    "zh_CN": "将当前打开的文档移动到文档树指定位置",
-    "zh_TW": "將當前打開的文檔移動到文檔樹指定位置",
-    "ja_JP": "現在開いているドキュメントをドキュメントツリーの指定された位置に移動します"
+    "zh-CN": "将当前打开的文档移动到文档树指定位置",
+    "zh-TW": "將當前打開的文檔移動到文檔樹指定位置",
+    "ja": "現在開いているドキュメントをドキュメントツリーの指定された位置に移動します"
   },
   "readme": {
     "default": "README.md",
-    "zh_CN": "README_zh_CN.md",
-    "zh_TW": "README_zh_CHT.md",
-    "ja_JP": "README_ja_JP.md"
+    "zh-CN": "README.zh-CN.md",
+    "zh-TW": "README.zh-TW.md",
+    "ja": "README.ja.md"
   },
-  "funding": {
-    "custom": [
-      "https://bento.me/jeffff"
-    ]
-  },
-  "keywords": [
-    "move to this document",
-    "move to this notebook"
-  ]
+  "funding": {"custom": ["https://mytemos.com/"]}
 }
