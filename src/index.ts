@@ -131,7 +131,7 @@ export default class PluginSample extends Plugin {
             return;
         }
 
-        const displayName = currentDoc.name.length > 30 ? currentDoc.name.slice(0, 30) + "..." : currentDoc.name;
+        const displayName = currentDoc.name.length > 10 ? currentDoc.name.slice(0, 10) + "..." : currentDoc.name;
         const labelKey = `moveToThis${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}`;
         menu.addItem({
             id: `move-doc_to-this-${type.toLowerCase()}`,
