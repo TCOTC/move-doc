@@ -30,7 +30,10 @@ export default class PluginSample extends Plugin {
         this.eventBus.on("open-menu-doctree", this.openMenuDoctree);
 
         await this.loadData(STORAGE_NAME);
-        this.data[STORAGE_NAME] ??= {};
+        // loadData 在配置文件不存在时返回空字符串，需归一化为对象
+        if (typeof this.data[STORAGE_NAME] !== "object" || this.data[STORAGE_NAME] === null) {
+            this.data[STORAGE_NAME] = {};
+        }
         this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc ??= true;
         this.data[STORAGE_NAME].moveDocPosition ??= "follow";
 
