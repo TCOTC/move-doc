@@ -12,8 +12,6 @@ import "./index.scss";
 const STORAGE_NAME = "move-doc-config.json";
 
 export default class PluginSample extends Plugin {
-    public setting: Setting;
-
     async onload() {
         // "open-menu-doctree": {
         //     menu: subMenu,
