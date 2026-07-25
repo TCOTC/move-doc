@@ -1,9 +1,11 @@
 {
-  "moveToThisDoc": "現在のドキュメント <b>{currentDoc}</b> をこのドキュメントに移動",
+  "moveAboveThisDoc": "現在のドキュメント <b>{currentDoc}</b> をこのドキュメントの上に移動",
+  "moveBelowThisDoc": "現在のドキュメント <b>{currentDoc}</b> をこのドキュメントの下に移動",
+  "moveToThisDoc": "現在のドキュメント <b>{currentDoc}</b> をこのドキュメントの子にする",
   "moveToThisNotebook": "現在のドキュメント <b>{currentDoc}</b> をこのノートブックに移動",
   "expandDocTreeAfterMoveDoc": "ドキュメント移動後にドキュメントツリーを展開",
   "moveDocPosition": "移動先の子ドキュメント一覧での位置",
-  "moveDocPositionDesc": "移動先がカスタムソートの場合のみ有効",
+  "moveDocPositionDesc": "移動先がカスタムソートの場合のみ有効。「上 / 下」への移動はこの設定の影響を受けません",
   "moveDocPositionFollow": "思源の「新規ドキュメントを上部に作成」設定に従う",
   "moveDocPositionTop": "先頭",
   "moveDocPositionBottom": "末尾",

@@ -1,9 +1,11 @@
 {
-  "moveToThisDoc": "Move current doc <b>{currentDoc}</b> to this doc",
+  "moveAboveThisDoc": "Move current doc <b>{currentDoc}</b> above this doc",
+  "moveBelowThisDoc": "Move current doc <b>{currentDoc}</b> below this doc",
+  "moveToThisDoc": "Move current doc <b>{currentDoc}</b> as a child of this doc",
   "moveToThisNotebook": "Move current doc <b>{currentDoc}</b> to this notebook",
   "expandDocTreeAfterMoveDoc": "Expand document tree after moving document",
   "moveDocPosition": "Position of moved doc in the target's child list",
-  "moveDocPositionDesc": "Only takes effect when the target uses custom sort",
+  "moveDocPositionDesc": "Only takes effect when the target uses custom sort; above/below moves ignore this setting",
   "moveDocPositionFollow": "Follow SiYuan's \"Create new docs at the top\" setting",
   "moveDocPositionTop": "Top",
   "moveDocPositionBottom": "Bottom",

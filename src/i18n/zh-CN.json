@@ -1,9 +1,11 @@
 {
-  "moveToThisDoc": "将当前文档 <b>{currentDoc}</b> 移动到该文档下",
+  "moveAboveThisDoc": "将当前文档 <b>{currentDoc}</b> 移动到该文档上方",
+  "moveBelowThisDoc": "将当前文档 <b>{currentDoc}</b> 移动到该文档下方",
+  "moveToThisDoc": "将当前文档 <b>{currentDoc}</b> 移动为该文档的子文档",
   "moveToThisNotebook": "将当前文档 <b>{currentDoc}</b> 移动到该笔记本下",
   "expandDocTreeAfterMoveDoc": "移动文档之后展开文档树",
   "moveDocPosition": "移动文档到目标位置的子文档列表中的位置",
-  "moveDocPositionDesc": "仅在目标位置使用自定义排序时生效",
+  "moveDocPositionDesc": "仅在目标位置使用自定义排序时生效；「上方 / 下方」移动不受此设置影响",
   "moveDocPositionFollow": "跟随思源的「新建子文档放置在顶部」设置",
   "moveDocPositionTop": "开头",
   "moveDocPositionBottom": "末尾",
