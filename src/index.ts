@@ -48,11 +48,12 @@ export default class PluginSample extends Plugin {
         this.eventBus.off('open-menu-doctree', this.openMenuDoctree);
     }
 
-    uninstall() {
-        this.eventBus.off('open-menu-doctree', this.openMenuDoctree);
+    async uninstall() {
+        await this.removeData(STORAGE_NAME);
     }
 
     openMenuDoctree = (event: CustomEvent) => {
+        console.log("event", event.detail);
         const type = event.detail.type;
         const menu = event.detail.menu as Menu;
         const element = event.detail.elements[0];
@@ -62,6 +63,8 @@ export default class PluginSample extends Plugin {
             // 当前文档不存在
             return;
         }
+
+        console.log("currentDoc", currentDoc);
 
         let targetDocId: string;
         let targetNotebookId: string;
@@ -95,10 +98,12 @@ export default class PluginSample extends Plugin {
             return;
         }
 
+        const displayName = currentDoc.name.length > 30 ? currentDoc.name.slice(0, 30) + "..." : currentDoc.name;
+        const labelKey = `moveToThis${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}`;
         menu.addItem({
             id: `move-doc_to-this-${type.toLowerCase()}`,
             icon: "iconMove",
-            label: this.i18n[`moveToThis${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}`],
+            label: this.i18n[labelKey].replace("{currentDoc}", window.Lute.EscapeHTMLStr(displayName)),
             click: async () => {
                 const res = await fetchSyncPost('/api/filetree/moveDocsByID', {
                     fromIDs: [currentDoc.id],
@@ -158,15 +163,18 @@ export default class PluginSample extends Plugin {
         });
     };
 
-    getCurrentDoc = (): { id: string, path: string, notebookId: string } | null => {
+    getCurrentDoc = (): { id: string, path: string, notebookId: string, name: string } | null => {
         // 原生函数获取当前文档 protyle https://github.com/siyuan-note/siyuan/issues/15415
         const editor = getActiveEditor(false);
         const protyle = editor?.protyle;
         if (!protyle || !protyle.block?.rootID || !protyle.path || !protyle.notebookId) return null;
+        // 从 protyle 标题元素获取文档名称，空标题时回退为“未命名文档”
+        const name = protyle.title?.editElement?.textContent || window.siyuan.languages?._kernel[16] || "";
         return {
             id: protyle.block.rootID,
             path: protyle.path,
-            notebookId: protyle.notebookId
+            notebookId: protyle.notebookId,
+            name,
         };
     };
 }
