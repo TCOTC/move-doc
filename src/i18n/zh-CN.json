@@ -2,7 +2,13 @@
   "moveToThisDoc": "将当前文档 <b>{currentDoc}</b> 移动到该文档下",
   "moveToThisNotebook": "将当前文档 <b>{currentDoc}</b> 移动到该笔记本下",
   "expandDocTreeAfterMoveDoc": "移动文档之后展开文档树",
+  "moveDocPosition": "移动文档到目标位置的子文档列表中的位置",
+  "moveDocPositionDesc": "仅在目标位置使用自定义排序时生效",
+  "moveDocPositionFollow": "跟随思源的「新建子文档放置在顶部」设置",
+  "moveDocPositionTop": "开头",
+  "moveDocPositionBottom": "末尾",
   "moveDocFailed": "移动文档失败",
   "getPathByIDFailed": "获取文档路径失败",
-  "getDocsByPathFailed": "通过路径获取文档失败"
+  "getDocsByPathFailed": "通过路径获取文档失败",
+  "setSortFailed": "设置文档排序失败"
 }

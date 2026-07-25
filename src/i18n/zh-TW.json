@@ -2,7 +2,13 @@
   "moveToThisDoc": "將當前文檔 <b>{currentDoc}</b> 移動到該文檔下",
   "moveToThisNotebook": "將當前文檔 <b>{currentDoc}</b> 移動到該筆記本下",
   "expandDocTreeAfterMoveDoc": "移動文檔之後展開文檔樹",
+  "moveDocPosition": "移動文檔到目標位置的子文檔列表中的位置",
+  "moveDocPositionDesc": "僅在目標位置使用自訂排序時生效",
+  "moveDocPositionFollow": "跟隨思源的「新建子文檔放置在頂部」設定",
+  "moveDocPositionTop": "開頭",
+  "moveDocPositionBottom": "末尾",
   "moveDocFailed": "移動文檔失敗",
   "getPathByIDFailed": "獲取文檔路徑失敗",
-  "getDocsByPathFailed": "通過路徑獲取文檔失敗"
+  "getDocsByPathFailed": "通過路徑獲取文檔失敗",
+  "setSortFailed": "設定文檔排序失敗"
 }

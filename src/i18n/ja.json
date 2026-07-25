@@ -2,7 +2,13 @@
   "moveToThisDoc": "現在のドキュメント <b>{currentDoc}</b> をこのドキュメントに移動",
   "moveToThisNotebook": "現在のドキュメント <b>{currentDoc}</b> をこのノートブックに移動",
   "expandDocTreeAfterMoveDoc": "ドキュメント移動後にドキュメントツリーを展開",
+  "moveDocPosition": "移動先の子ドキュメント一覧での位置",
+  "moveDocPositionDesc": "移動先がカスタムソートの場合のみ有効",
+  "moveDocPositionFollow": "思源の「新規ドキュメントを上部に作成」設定に従う",
+  "moveDocPositionTop": "先頭",
+  "moveDocPositionBottom": "末尾",
   "moveDocFailed": "ドキュメント移動に失敗しました",
   "getPathByIDFailed": "ドキュメントパス取得に失敗しました",
-  "getDocsByPathFailed": "パスからドキュメント取得に失敗しました"
+  "getDocsByPathFailed": "パスからドキュメント取得に失敗しました",
+  "setSortFailed": "ドキュメントの並び替え設定に失敗しました"
 }

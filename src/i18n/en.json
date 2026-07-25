@@ -2,7 +2,13 @@
   "moveToThisDoc": "Move current doc <b>{currentDoc}</b> to this doc",
   "moveToThisNotebook": "Move current doc <b>{currentDoc}</b> to this notebook",
   "expandDocTreeAfterMoveDoc": "Expand document tree after moving document",
+  "moveDocPosition": "Position of moved doc in the target's child list",
+  "moveDocPositionDesc": "Only takes effect when the target uses custom sort",
+  "moveDocPositionFollow": "Follow SiYuan's \"Create new docs at the top\" setting",
+  "moveDocPositionTop": "Top",
+  "moveDocPositionBottom": "Bottom",
   "moveDocFailed": "Failed to move document",
   "getPathByIDFailed": "Failed to get document path",
-  "getDocsByPathFailed": "Failed to get documents by path"
+  "getDocsByPathFailed": "Failed to get documents by path",
+  "setSortFailed": "Failed to set document sort"
 }
