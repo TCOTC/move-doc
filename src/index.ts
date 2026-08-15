@@ -20,13 +20,15 @@ type MoveDocPosition = "follow" | "top" | "bottom";
 /** 相对目标文档的排序位置 */
 type RelativeSortPosition = "above" | "below";
 
+/** open-menu-doctree 事件的 items 项，需内核提供 notebookId */
+type DocTreeMenuItem = {
+    id: string;
+    path: string;
+    notebookId: string;
+};
+
 export default class PluginSample extends Plugin {
     async onload() {
-        // "open-menu-doctree": {
-        //     menu: subMenu,
-        //     elements: NodeListOf<HTMLElement>,
-        //     type: "doc" | "docs" | "notebook",
-        // };
         this.eventBus.on("open-menu-doctree", this.openMenuDoctree);
 
         await this.loadData(STORAGE_NAME);
@@ -84,20 +86,26 @@ export default class PluginSample extends Plugin {
                 return select;
             }
         });
+
+        console.log(this.displayName, "plugin loaded")
     }
 
     onunload() {
         this.eventBus.off("open-menu-doctree", this.openMenuDoctree);
+
+        console.log(this.displayName, "plugin unloaded")
     }
 
     async uninstall() {
         await this.removeData(STORAGE_NAME);
+
+        console.log(this.displayName, "plugin uninstalled")
     }
 
     openMenuDoctree = (event: CustomEvent) => {
         const type = event.detail.type;
         const menu = event.detail.menu as Menu;
-        const element = event.detail.elements[0] as HTMLElement;
+        const item = (event.detail.items as DocTreeMenuItem[] | undefined)?.[0];
 
         const currentDoc = this.getCurrentDoc();
         if (!currentDoc) {
@@ -108,11 +116,11 @@ export default class PluginSample extends Plugin {
         const displayName = currentDoc.name.length > 10 ? currentDoc.name.slice(0, 10) + "..." : currentDoc.name;
         const escapedName = window.Lute.EscapeHTMLStr(displayName);
 
-        // doc: 单个文档；docs: 多个文档 / 文档与笔记本混合；notebook: 单个笔记本
+        // 仅处理单个文档或单个笔记本；多选与混选不提供移动入口
         if (type === "doc") {
-            const targetDocId = element?.getAttribute("data-node-id");
-            const targetDocPath = element?.getAttribute("data-path");
-            const targetNotebookId = element?.closest("ul[data-url]")?.getAttribute("data-url");
+            const targetDocId = item?.id;
+            const targetDocPath = item?.path;
+            const targetNotebookId = item?.notebookId;
             if (!targetDocId || !targetDocPath || !targetNotebookId) {
                 return;
             }
@@ -120,13 +128,6 @@ export default class PluginSample extends Plugin {
                 // 排除当前文档
                 return;
             }
-            // TODO跟进: 目前不支持使用异步操作 https://github.com/siyuan-note/siyuan/issues/15676
-            // const targetDocInfo = await fetchSyncPost("/api/block/getBlockInfo", { id: targetDocId });
-            // if (!targetDocInfo?.data?.path || targetDocInfo.data.path.includes(currentDoc.id)) {
-            //     // 排除子文档
-            //     return;
-            // };
-            // TODO功能: 考虑在事件参数里传递路径信息，不需要耗时请求 https://github.com/siyuan-note/siyuan/pull/15620
             if (targetDocPath.includes(currentDoc.id)) {
                 // 排除子文档
                 return;
@@ -163,7 +164,7 @@ export default class PluginSample extends Plugin {
                 });
             }
         } else if (type === "notebook") {
-            const targetNotebookId = element?.parentElement?.getAttribute("data-url");
+            const targetNotebookId = item?.notebookId;
             if (!targetNotebookId || (currentDoc.notebookId === targetNotebookId && currentDoc.path.length <= 26)) {
                 // 如果文档在笔记本根目录的话需要排除当前笔记本
                 return;
