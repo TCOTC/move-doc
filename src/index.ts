@@ -385,8 +385,13 @@ export default class PluginSample extends Plugin {
         const editor = getActiveEditor(false);
         const protyle = editor?.protyle;
         if (!protyle || !protyle.block?.rootID || !protyle.path || !protyle.notebookId) return null;
-        // 从 protyle 标题元素获取文档名称，空标题时回退为“未命名文档”
-        const name = protyle.title?.editElement?.textContent || window.siyuan.languages._kernel[16] || "";
+        // 桌面端从 protyle 的标题元素获取文档名称；移动端 render.titleShowTop 为 true，标题显示在顶栏，
+        // protyle 内不生成标题元素，改用内核下发的文档属性标题，再回退到顶栏标题，空标题时回退为“未命名文档”
+        const ialTitle = protyle.background?.ial?.title;
+        const name = protyle.title?.editElement?.textContent
+            || (typeof ialTitle === "string" ? ialTitle : "")
+            || (document.getElementById("toolbarName") as HTMLInputElement | null)?.value
+            || window.siyuan.languages._kernel[16] || "";
         return {
             id: protyle.block.rootID,
             path: protyle.path,
