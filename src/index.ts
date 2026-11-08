@@ -1,30 +1,43 @@
 import {
     Plugin,
-    Menu,
     Setting,
     fetchSyncPost,
     getActiveEditor,
     expandDocTree,
     showMessage,
+    type IEventBusMap,
 } from "siyuan";
 import "./index.scss";
 
 const STORAGE_NAME = "move-doc-config.json";
 
-/** 自定义排序模式，确保 listDocsByPath 返回有效的 sort 字段 */
+/** 自定义排序模式，使 listDocsByPath 按自定义顺序返回，首个 / 末个文档即为真实首尾 */
 const SORT_MODE_CUSTOM = 6;
 
 /** 移动文档到目标子文档列表中的位置 */
 type MoveDocPosition = "follow" | "top" | "bottom";
 
-/** 相对目标文档的排序位置 */
+/** 相对锚点文档的排序位置，与 reorderDocs 的 position 取值一致 */
+type SortPosition = "before" | "after";
+
+/** 相对目标文档的位置 */
 type RelativeSortPosition = "above" | "below";
 
-/** open-menu-doctree 事件的 items 项，需内核提供 notebookId */
-type DocTreeMenuItem = {
-    id: string;
-    path: string;
+/** 移动目标：笔记本，或该笔记本中的一个文档 */
+type MoveDocTarget = {
     notebookId: string;
+    /** 目标文档路径，同时也是其子文档列表的 listPath；省略时按笔记本根目录处理 */
+    docPath?: string;
+    /** 目标文档 ID，目标列表为空时用于直接移动 */
+    docId?: string;
+    /** 目标子文档列表当前生效的排序方式 */
+    listSortMode: number;
+};
+
+/** 排序锚点：error 为 true 表示列表读取失败，anchorId 为空表示目标列表为空 */
+type ChildAnchor = {
+    error: boolean;
+    anchorId?: string;
 };
 
 export default class PluginSample extends Plugin {
@@ -102,10 +115,13 @@ export default class PluginSample extends Plugin {
         console.log(this.displayName, "plugin uninstalled")
     }
 
-    openMenuDoctree = (event: CustomEvent) => {
+    openMenuDoctree = (event: CustomEvent<IEventBusMap["open-menu-doctree"]>) => {
         const type = event.detail.type;
-        const menu = event.detail.menu as Menu;
-        const item = (event.detail.items as DocTreeMenuItem[] | undefined)?.[0];
+        const menu = event.detail.menu;
+        const item = event.detail.items[0];
+        if (!item) {
+            return;
+        }
 
         const currentDoc = this.getCurrentDoc();
         if (!currentDoc) {
@@ -133,23 +149,37 @@ export default class PluginSample extends Plugin {
                 return;
             }
 
-            // 移动到该文档上方 / 下方 https://github.com/TCOTC/move-doc/issues/8
-            menu.addItem({
-                id: "move-doc_above-this-doc",
-                icon: "iconUp",
-                label: this.i18n.moveAboveThisDoc.replace("{currentDoc}", escapedName),
-                click: async () => {
-                    await this.moveDocBeside(currentDoc.id, targetDocId, targetDocPath, targetNotebookId, "above");
-                }
-            });
-            menu.addItem({
-                id: "move-doc_below-this-doc",
-                icon: "iconDown",
-                label: this.i18n.moveBelowThisDoc.replace("{currentDoc}", escapedName),
-                click: async () => {
-                    await this.moveDocBeside(currentDoc.id, targetDocId, targetDocPath, targetNotebookId, "below");
-                }
-            });
+            // 自定义排序下可相对目标文档精确插入；其他排序规则下位置由规则决定，只能选择该层
+            const listSortMode = item.effectiveSortMode;
+            if (listSortMode === SORT_MODE_CUSTOM) {
+                // 移动到该文档上方 / 下方 https://github.com/TCOTC/move-doc/issues/8
+                menu.addItem({
+                    id: "move-doc_above-this-doc",
+                    icon: "iconUp",
+                    label: this.i18n.moveAboveThisDoc.replace("{currentDoc}", escapedName),
+                    click: async () => {
+                        await this.moveDocBeside(currentDoc.id, targetDocId, "above");
+                    }
+                });
+                menu.addItem({
+                    id: "move-doc_below-this-doc",
+                    icon: "iconDown",
+                    label: this.i18n.moveBelowThisDoc.replace("{currentDoc}", escapedName),
+                    click: async () => {
+                        await this.moveDocBeside(currentDoc.id, targetDocId, "below");
+                    }
+                });
+            } else {
+                // 移动到该文档所在层级，在该层级中的位置由设置决定 https://github.com/TCOTC/move-doc/issues/9
+                menu.addItem({
+                    id: "move-doc_to-same-level",
+                    icon: "iconMove",
+                    label: this.i18n.moveToSameLevel.replace("{currentDoc}", escapedName),
+                    click: async () => {
+                        await this.moveDocToSameLevel(currentDoc.id, targetDocPath, targetNotebookId, listSortMode);
+                    }
+                });
+            }
 
             const isParent = currentDoc.path.slice(-48).includes(targetDocId);
             if (!isParent) {
@@ -159,7 +189,13 @@ export default class PluginSample extends Plugin {
                     icon: "iconMove",
                     label: this.i18n.moveToThisDoc.replace("{currentDoc}", escapedName),
                     click: async () => {
-                        await this.moveDocAsChild(currentDoc.id, targetDocId);
+                        await this.moveDocAsChild(currentDoc.id, {
+                            notebookId: targetNotebookId,
+                            docPath: targetDocPath,
+                            docId: targetDocId,
+                            // 子文档列表的排序方式取该文档的声明，未声明时继承其自身所在层
+                            listSortMode: item.childrenSortMode ?? listSortMode,
+                        });
                     }
                 });
             }
@@ -174,44 +210,80 @@ export default class PluginSample extends Plugin {
                 icon: "iconMove",
                 label: this.i18n.moveToThisNotebook.replace("{currentDoc}", escapedName),
                 click: async () => {
-                    await this.moveDocAsChild(currentDoc.id, targetNotebookId, targetNotebookId);
+                    await this.moveDocAsChild(currentDoc.id, {
+                        notebookId: targetNotebookId,
+                        listSortMode: item.effectiveSortMode,
+                    });
                 }
             });
         }
     };
 
     /** 移动为子文档，并按配置调整排序 */
-    moveDocAsChild = async (fromID: string, toID: string, knownNotebookId?: string): Promise<void> => {
-        const moved = await this.moveDocByID(fromID, toID);
-        if (!moved) {
-            return;
-        }
-
-        // 按配置将文档排序到目标位置的开头或末尾 https://github.com/TCOTC/move-doc/issues/3
-        await this.applyMoveDocSort(fromID, knownNotebookId);
-
-        if (this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc) {
-            // 移动文档之后展开文档树 https://github.com/TCOTC/move-doc/issues/2
-            expandDocTree({ id: fromID });
+    moveDocAsChild = async (fromID: string, target: MoveDocTarget): Promise<void> => {
+        const moved = await this.placeDocInList(fromID, target.notebookId, target.docPath ?? "/",
+            target.docId ?? target.notebookId, target.listSortMode);
+        if (moved) {
+            this.expandAfterMove(fromID);
         }
     };
 
-    /** 移动到目标文档的上方或下方（成为同级） */
-    moveDocBeside = async (
+    /** 移动到目标文档所在层级，并按配置调整排序 */
+    moveDocToSameLevel = async (
         fromID: string,
-        targetDocId: string,
         targetDocPath: string,
         targetNotebookId: string,
-        position: RelativeSortPosition,
+        listSortMode: number,
     ): Promise<void> => {
+        const parentListPath = this.getParentListPath(targetDocPath);
         const parentId = this.getParentTargetId(targetDocPath, targetNotebookId);
-        const moved = await this.moveDocByID(fromID, parentId);
-        if (!moved) {
-            return;
+        const moved = await this.placeDocInList(fromID, targetNotebookId, parentListPath, parentId, listSortMode);
+        if (moved) {
+            this.expandAfterMove(fromID);
+        }
+    };
+
+    /** 移动到目标文档的上方或下方，仅在目标层使用自定义排序时提供 */
+    moveDocBeside = async (fromID: string, targetDocId: string, position: RelativeSortPosition): Promise<void> => {
+        const moved = await this.reorderDocs([fromID], targetDocId, position === "above" ? "before" : "after");
+        if (moved) {
+            this.expandAfterMove(fromID);
+        }
+    };
+
+    /**
+     * 把文档移入目标列表。列表已使用自定义排序时按设置放到开头或末尾，
+     * 其他排序规则下位置由规则决定，只移动、不改动排序方式。
+     */
+    placeDocInList = async (
+        fromID: string,
+        notebookId: string,
+        listPath: string,
+        fallbackTargetId: string,
+        listSortMode: number,
+    ): Promise<boolean> => {
+        if (listSortMode !== SORT_MODE_CUSTOM) {
+            return await this.moveDocByID(fromID, fallbackTargetId);
         }
 
-        await this.applySortRelativeTo(fromID, targetDocId, targetDocPath, targetNotebookId, position);
+        const placeAtTop = this.shouldPlaceAtTop();
+        const anchor = await this.getChildAnchor(notebookId, listPath, placeAtTop);
+        if (anchor.error) {
+            return false;
+        }
+        if (!anchor.anchorId) {
+            // 目标列表为空，开头与末尾没有差别，直接移动
+            return await this.moveDocByID(fromID, fallbackTargetId);
+        }
+        if (anchor.anchorId === fromID) {
+            // 已在目标位置，无需调整
+            return true;
+        }
+        return await this.reorderDocs([fromID], anchor.anchorId, placeAtTop ? "before" : "after");
+    };
 
+    /** 移动文档之后展开文档树 https://github.com/TCOTC/move-doc/issues/2 */
+    expandAfterMove = (fromID: string): void => {
         if (this.data[STORAGE_NAME].expandDocTreeAfterMoveDoc) {
             expandDocTree({ id: fromID });
         }
@@ -230,7 +302,7 @@ export default class PluginSample extends Plugin {
         return true;
     };
 
-    /** 是否将移动后的文档放到子文档列表开头 */
+    /** 是否将移动后的文档放到目标列表开头 */
     shouldPlaceAtTop = (): boolean => {
         const position: MoveDocPosition = this.data[STORAGE_NAME].moveDocPosition ?? "follow";
         if (position === "top") {
@@ -243,7 +315,7 @@ export default class PluginSample extends Plugin {
         return !!window.siyuan.config.fileTree.createDocAtTop;
     };
 
-    /** 从文档路径得到 listDocsByPath 所需的父路径 */
+    /** 从文档路径得到 listDocsByPath 所需的父列表路径 */
     getParentListPath = (docPath: string): string => {
         const lastSlash = docPath.lastIndexOf("/");
         if (lastSlash <= 0) {
@@ -262,97 +334,50 @@ export default class PluginSample extends Plugin {
         return parentListPath.substring(parentListPath.lastIndexOf("/") + 1, parentListPath.length - 3);
     };
 
-    /** 设置文档的自定义排序值 */
-    setDocSort = async (docSorts: { id: string; sort: number }[]): Promise<boolean> => {
-        const sortRes = await fetchSyncPost("/api/filetree/setSort", { docSorts });
-        if (sortRes.code !== 0) {
-            showMessage(this.displayName + ": " + this.i18n.setSortFailed, undefined, "error", "move-doc_set-sort-failed");
+    /**
+     * 一次调用完成移动与相对排序，由内核按完整同级列表计算位置。
+     * 仅在目标列表已使用自定义排序时调用，不会改动排序方式。
+     */
+    reorderDocs = async (sourceIDs: string[], targetID: string, position: SortPosition): Promise<boolean> => {
+        const res = await fetchSyncPost("/api/filetree/reorderDocs", {
+            sourceIDs,
+            targetID,
+            position,
+            respectSort: true,
+        });
+        if (res.code !== 0) {
+            showMessage(this.displayName + ": " + this.i18n.moveDocFailed, undefined, "error", "move-doc_move-doc-failed");
+            return false;
+        }
+        if (res.data?.conflict) {
+            // 列表排序方式在操作期间变化时内核不会执行，避免静默失败
+            showMessage(this.displayName + ": " + this.i18n.sortModeChanged, undefined, "error", "move-doc_sort-mode-changed");
             return false;
         }
         return true;
     };
 
-    /** 移动文档后，按配置调整自定义排序 */
-    applyMoveDocSort = async (docId: string, knownNotebookId?: string): Promise<void> => {
-        const placeAtTop = this.shouldPlaceAtTop();
-
-        const pathRes = await fetchSyncPost("/api/filetree/getPathByID", {
-            id: docId,
-        });
-        const notebook: string = pathRes.data?.notebook || knownNotebookId;
-        const docPath: string = pathRes.data?.path;
-        if (pathRes.code !== 0 || !notebook || !docPath) {
-            showMessage(this.displayName + ": " + this.i18n.getPathByIDFailed, undefined, "error", "move-doc_get-path-by-id-failed");
-            return;
-        }
-
-        const listPath = this.getParentListPath(docPath);
-        const listRes = await fetchSyncPost("/api/filetree/listDocsByPath", {
-            notebook,
+    /** 取目标列表的第一个或最后一个文档作为排序锚点 */
+    getChildAnchor = async (notebookId: string, listPath: string, first: boolean): Promise<ChildAnchor> => {
+        const res = await fetchSyncPost("/api/filetree/listDocsByPath", {
+            notebook: notebookId,
             path: listPath,
             sort: SORT_MODE_CUSTOM,
-            // 放到开头时只需取第一个；放到末尾时取全部（0 表示不限制）
-            maxListCount: placeAtTop ? 1 : 0,
+            // 取第一个只需取一条；取最后一个需要完整列表（0 表示不限制）
+            maxListCount: first ? 1 : 0,
             showHidden: true,
             ignoreMaxListHint: true,
         });
-        const files: { id: string; sort: number }[] = listRes.data?.files ?? [];
-        if (listRes.code !== 0 || files.length === 0) {
+        if (res.code !== 0) {
             showMessage(this.displayName + ": " + this.i18n.getDocsByPathFailed, undefined, "error", "move-doc_get-docs-by-path-failed");
-            return;
+            return { error: true };
         }
 
-        const anchor = placeAtTop ? files[0] : files[files.length - 1];
-        if (anchor.id === docId) {
-            // 已在目标位置，无需调整
-            return;
+        const files: { id: string }[] = res.data?.files ?? [];
+        if (files.length === 0) {
+            return { error: false };
         }
-
-        const sortVal = placeAtTop ? anchor.sort - 1 : anchor.sort + 1;
-        await this.setDocSort([{ id: docId, sort: sortVal }]);
-    };
-
-    /** 将文档排序到目标文档的上方或下方 */
-    applySortRelativeTo = async (
-        docId: string,
-        targetDocId: string,
-        targetDocPath: string,
-        targetNotebookId: string,
-        position: RelativeSortPosition,
-    ): Promise<void> => {
-        const listPath = this.getParentListPath(targetDocPath);
-        const listRes = await fetchSyncPost("/api/filetree/listDocsByPath", {
-            notebook: targetNotebookId,
-            path: listPath,
-            sort: SORT_MODE_CUSTOM,
-            maxListCount: 0,
-            showHidden: true,
-            ignoreMaxListHint: true,
-        });
-        const files: { id: string; sort: number }[] = listRes.data?.files ?? [];
-        if (listRes.code !== 0 || files.length === 0) {
-            showMessage(this.displayName + ": " + this.i18n.getDocsByPathFailed, undefined, "error", "move-doc_get-docs-by-path-failed");
-            return;
-        }
-
-        const siblings = files.filter((f) => f.id !== docId);
-        const targetIndex = siblings.findIndex((f) => f.id === targetDocId);
-        if (targetIndex === -1) {
-            showMessage(this.displayName + ": " + this.i18n.getDocsByPathFailed, undefined, "error", "move-doc_get-docs-by-path-failed");
-            return;
-        }
-
-        const insertAt = position === "above" ? targetIndex : targetIndex + 1;
-        const ordered = siblings.slice();
-        ordered.splice(insertAt, 0, { id: docId, sort: 0 });
-
-        // 已在目标相对位置时无需调整
-        if (files.length === ordered.length && files.every((f, i) => f.id === ordered[i].id)) {
-            return;
-        }
-
-        // 按插入后的顺序重排同级文档，确保相对位置准确
-        await this.setDocSort(ordered.map((f, i) => ({ id: f.id, sort: i })));
+        return { error: false, anchorId: first ? files[0].id : files[files.length - 1].id };
     };
 
     getCurrentDoc = (): { id: string, path: string, notebookId: string, name: string } | null => {

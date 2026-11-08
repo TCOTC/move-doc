@@ -10,10 +10,10 @@ importers:
     devDependencies:
       '@typescript-eslint/eslint-plugin':
         specifier: 8.40.0
-        version: 8.40.0(@typescript-eslint/parser@8.40.0(eslint@9.33.0)(typescript@4.9.5))(eslint@9.33.0)(typescript@4.9.5)
+        version: 8.40.0(@typescript-eslint/parser@8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5))(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
       '@typescript-eslint/parser':
         specifier: 8.40.0
-        version: 8.40.0(eslint@9.33.0)(typescript@4.9.5)
+        version: 8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
       copy-webpack-plugin:
         specifier: ^11.0.0
         version: 11.0.0(webpack@5.109.0)
@@ -25,7 +25,7 @@ importers:
         version: 3.2.0(webpack@5.109.0)
       eslint:
         specifier: ^9.33.0
-        version: 9.33.0
+        version: 9.33.0(supports-color@8.1.1)
       globals:
         specifier: ^16.3.0
         version: 16.3.0
@@ -39,8 +39,8 @@ importers:
         specifier: ^16.0.5
         version: 16.0.8(sass@1.90.0)(webpack@5.109.0)
       siyuan:
-        specifier: ^1.2.3
-        version: 1.2.3
+        specifier: github:siyuan-note/petal#0d02f3d0c275282b8a89e5b5c28335128a3209ce
+        version: git+https://github.com/siyuan-note/petal.git#0d02f3d0c275282b8a89e5b5c28335128a3209ce
       tslib:
         specifier: 2.4.0
         version: 2.4.0
@@ -49,7 +49,7 @@ importers:
         version: 4.9.5
       webpack:
         specifier: ^5.104.1
-        version: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+        version: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
       webpack-cli:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.109.0)
@@ -63,14 +63,14 @@ packages:
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
 
-  '@dop251/types-goja_nodejs-buffer@0.0.0-20260212111938-1f56ff5bcf14':
-    resolution: {integrity: sha512-+ZEK3z3RVSE9O7Ml8HoeLtYSI/yR2ifa7Ppabfjq5fW06Kf00PcUz6hjz2we1h9CxlhiI7pLglEy4+hTUYGsQA==}
+  '@dop251/types-goja_nodejs-buffer@0.0.0-20260918183711-b481721df8a2':
+    resolution: {integrity: sha512-RWaDBwsOPEtZhajOiOiMRIQYvQKZdtq9XrDhc49upOs3lIb5E9hj7AK90nUI9kI9qULQ4lDVvI94joTlDkH1Lg==}
 
-  '@dop251/types-goja_nodejs-global@0.0.0-20260212111938-1f56ff5bcf14':
-    resolution: {integrity: sha512-NYnSveyts20w79Qp+Cs6a8vyrP3+8QVisseCU/2F0rMXK/WmLvbQYmyjNFMlDbY8g3HcooTIB/2AwcwonabQEg==}
+  '@dop251/types-goja_nodejs-global@0.0.0-20260918183711-b481721df8a2':
+    resolution: {integrity: sha512-nE+7cM9ncPqboXC6jJ60AJJghVfIwN1iXT2E8lgzLJ2LM8b6BjteDU49jq03XAl+8IJG8AuID/pt3D7w5zcCjg==}
 
-  '@dop251/types-goja_nodejs-url@0.0.0-20260212111938-1f56ff5bcf14':
-    resolution: {integrity: sha512-RyxfUr5u0WOO0dV2/BxV+zJ2QwUqnIoSwIoPQcGHakWp8elJ/nSU86pUB9gSO77e2XHWZYAZvNN5tXa9yOXJaA==}
+  '@dop251/types-goja_nodejs-url@0.0.0-20260918183711-b481721df8a2':
+    resolution: {integrity: sha512-o4k1jM2mA4lvmdPYYbDeslXQlfFb+ezk5T4HplpRW0lBTmABDIgBV/tbdXAhIkcEtL5jcQJ3Kgnw+N9E/WMFQw==}
 
   '@esbuild/aix-ppc64@0.19.12':
     resolution: {integrity: sha512-bmoCYyWdEL3wDQIVbcyzRyeKLgk2WtWLTWz1ZIAZF/EGbNOwSA6ew3PftJ1PqMiOOGu0OyFMzG53L0zqIpPeNA==}
@@ -1280,8 +1280,9 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
-  siyuan@1.2.3:
-    resolution: {integrity: sha512-AfJkme+0TbBSeGRVOD13O5r6CF4iXUHfv2PCqJiXcF/eM3IgEx9JS1T/SQq4HyLQcJvcsJAM4h/2e+paLJYRIg==}
+  siyuan@git+https://github.com/siyuan-note/petal.git#0d02f3d0c275282b8a89e5b5c28335128a3209ce:
+    resolution: {commit: 0d02f3d0c275282b8a89e5b5c28335128a3209ce, repo: https://github.com/siyuan-note/petal.git, type: git}
+    version: 1.2.9
 
   slash@4.0.0:
     resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
@@ -1434,22 +1435,19 @@ packages:
       webpack: ^4.0.0 || ^5.0.0
       webpack-sources: '*'
 
-  zod@4.4.3:
-    resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
-
 snapshots:
 
   '@discoveryjs/json-ext@0.5.7': {}
 
-  '@dop251/types-goja_nodejs-buffer@0.0.0-20260212111938-1f56ff5bcf14':
+  '@dop251/types-goja_nodejs-buffer@0.0.0-20260918183711-b481721df8a2':
     dependencies:
-      '@dop251/types-goja_nodejs-global': 0.0.0-20260212111938-1f56ff5bcf14
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260918183711-b481721df8a2
 
-  '@dop251/types-goja_nodejs-global@0.0.0-20260212111938-1f56ff5bcf14': {}
+  '@dop251/types-goja_nodejs-global@0.0.0-20260918183711-b481721df8a2': {}
 
-  '@dop251/types-goja_nodejs-url@0.0.0-20260212111938-1f56ff5bcf14':
+  '@dop251/types-goja_nodejs-url@0.0.0-20260918183711-b481721df8a2':
     dependencies:
-      '@dop251/types-goja_nodejs-global': 0.0.0-20260212111938-1f56ff5bcf14
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260918183711-b481721df8a2
 
   '@esbuild/aix-ppc64@0.19.12':
     optional: true
@@ -1520,17 +1518,17 @@ snapshots:
   '@esbuild/win32-x64@0.19.12':
     optional: true
 
-  '@eslint-community/eslint-utils@4.7.0(eslint@9.33.0)':
+  '@eslint-community/eslint-utils@4.7.0(eslint@9.33.0(supports-color@8.1.1))':
     dependencies:
-      eslint: 9.33.0
+      eslint: 9.33.0(supports-color@8.1.1)
       eslint-visitor-keys: 3.4.3
 
   '@eslint-community/regexpp@4.12.1': {}
 
-  '@eslint/config-array@0.21.0':
+  '@eslint/config-array@0.21.0(supports-color@8.1.1)':
     dependencies:
       '@eslint/object-schema': 2.1.6
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@8.1.1)
       minimatch: 3.1.2
     transitivePeerDependencies:
       - supports-color
@@ -1541,10 +1539,10 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
 
-  '@eslint/eslintrc@3.3.1':
+  '@eslint/eslintrc@3.3.1(supports-color@8.1.1)':
     dependencies:
       ajv: 6.12.6
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@8.1.1)
       espree: 10.4.0
       globals: 14.0.0
       ignore: 5.3.2
@@ -1677,15 +1675,15 @@ snapshots:
     dependencies:
       undici-types: 7.10.0
 
-  '@typescript-eslint/eslint-plugin@8.40.0(@typescript-eslint/parser@8.40.0(eslint@9.33.0)(typescript@4.9.5))(eslint@9.33.0)(typescript@4.9.5)':
+  '@typescript-eslint/eslint-plugin@8.40.0(@typescript-eslint/parser@8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5))(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
     dependencies:
       '@eslint-community/regexpp': 4.12.1
-      '@typescript-eslint/parser': 8.40.0(eslint@9.33.0)(typescript@4.9.5)
+      '@typescript-eslint/parser': 8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
       '@typescript-eslint/scope-manager': 8.40.0
-      '@typescript-eslint/type-utils': 8.40.0(eslint@9.33.0)(typescript@4.9.5)
-      '@typescript-eslint/utils': 8.40.0(eslint@9.33.0)(typescript@4.9.5)
+      '@typescript-eslint/type-utils': 8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/utils': 8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
       '@typescript-eslint/visitor-keys': 8.40.0
-      eslint: 9.33.0
+      eslint: 9.33.0(supports-color@8.1.1)
       graphemer: 1.4.0
       ignore: 7.0.5
       natural-compare: 1.4.0
@@ -1694,23 +1692,23 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/parser@8.40.0(eslint@9.33.0)(typescript@4.9.5)':
+  '@typescript-eslint/parser@8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
     dependencies:
       '@typescript-eslint/scope-manager': 8.40.0
       '@typescript-eslint/types': 8.40.0
-      '@typescript-eslint/typescript-estree': 8.40.0(typescript@4.9.5)
+      '@typescript-eslint/typescript-estree': 8.40.0(supports-color@8.1.1)(typescript@4.9.5)
       '@typescript-eslint/visitor-keys': 8.40.0
-      debug: 4.4.1
-      eslint: 9.33.0
+      debug: 4.4.1(supports-color@8.1.1)
+      eslint: 9.33.0(supports-color@8.1.1)
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/project-service@8.40.0(typescript@4.9.5)':
+  '@typescript-eslint/project-service@8.40.0(supports-color@8.1.1)(typescript@4.9.5)':
     dependencies:
       '@typescript-eslint/tsconfig-utils': 8.40.0(typescript@4.9.5)
       '@typescript-eslint/types': 8.40.0
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@8.1.1)
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
@@ -1724,13 +1722,13 @@ snapshots:
     dependencies:
       typescript: 4.9.5
 
-  '@typescript-eslint/type-utils@8.40.0(eslint@9.33.0)(typescript@4.9.5)':
+  '@typescript-eslint/type-utils@8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
     dependencies:
       '@typescript-eslint/types': 8.40.0
-      '@typescript-eslint/typescript-estree': 8.40.0(typescript@4.9.5)
-      '@typescript-eslint/utils': 8.40.0(eslint@9.33.0)(typescript@4.9.5)
-      debug: 4.4.1
-      eslint: 9.33.0
+      '@typescript-eslint/typescript-estree': 8.40.0(supports-color@8.1.1)(typescript@4.9.5)
+      '@typescript-eslint/utils': 8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)
+      debug: 4.4.1(supports-color@8.1.1)
+      eslint: 9.33.0(supports-color@8.1.1)
       ts-api-utils: 2.1.0(typescript@4.9.5)
       typescript: 4.9.5
     transitivePeerDependencies:
@@ -1738,13 +1736,13 @@ snapshots:
 
   '@typescript-eslint/types@8.40.0': {}
 
-  '@typescript-eslint/typescript-estree@8.40.0(typescript@4.9.5)':
+  '@typescript-eslint/typescript-estree@8.40.0(supports-color@8.1.1)(typescript@4.9.5)':
     dependencies:
-      '@typescript-eslint/project-service': 8.40.0(typescript@4.9.5)
+      '@typescript-eslint/project-service': 8.40.0(supports-color@8.1.1)(typescript@4.9.5)
       '@typescript-eslint/tsconfig-utils': 8.40.0(typescript@4.9.5)
       '@typescript-eslint/types': 8.40.0
       '@typescript-eslint/visitor-keys': 8.40.0
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@8.1.1)
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
@@ -1754,13 +1752,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.40.0(eslint@9.33.0)(typescript@4.9.5)':
+  '@typescript-eslint/utils@8.40.0(eslint@9.33.0(supports-color@8.1.1))(supports-color@8.1.1)(typescript@4.9.5)':
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@9.33.0)
+      '@eslint-community/eslint-utils': 4.7.0(eslint@9.33.0(supports-color@8.1.1))
       '@typescript-eslint/scope-manager': 8.40.0
       '@typescript-eslint/types': 8.40.0
-      '@typescript-eslint/typescript-estree': 8.40.0(typescript@4.9.5)
-      eslint: 9.33.0
+      '@typescript-eslint/typescript-estree': 8.40.0(supports-color@8.1.1)(typescript@4.9.5)
+      eslint: 9.33.0(supports-color@8.1.1)
       typescript: 4.9.5
     transitivePeerDependencies:
       - supports-color
@@ -1848,17 +1846,17 @@ snapshots:
 
   '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4)(webpack@5.109.0)':
     dependencies:
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.109.0)
 
   '@webpack-cli/info@2.0.2(webpack-cli@5.1.4)(webpack@5.109.0)':
     dependencies:
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.109.0)
 
   '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4)(webpack@5.109.0)':
     dependencies:
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.109.0)
 
   '@xtuc/ieee754@1.2.0': {}
@@ -1976,7 +1974,7 @@ snapshots:
       normalize-path: 3.0.0
       schema-utils: 4.3.2
       serialize-javascript: 6.0.2
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
 
   cross-spawn@7.0.6:
     dependencies:
@@ -1995,13 +1993,15 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.7.2
     optionalDependencies:
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
 
   cssesc@3.0.0: {}
 
-  debug@4.4.1:
+  debug@4.4.1(supports-color@8.1.1):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 8.1.1
 
   deep-is@0.1.4: {}
 
@@ -2030,7 +2030,7 @@ snapshots:
       esbuild: 0.19.12
       get-tsconfig: 4.10.1
       loader-utils: 2.0.4
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
       webpack-sources: 1.4.3
 
   esbuild@0.19.12:
@@ -2077,14 +2077,14 @@ snapshots:
 
   eslint-visitor-keys@4.2.1: {}
 
-  eslint@9.33.0:
+  eslint@9.33.0(supports-color@8.1.1):
     dependencies:
-      '@eslint-community/eslint-utils': 4.7.0(eslint@9.33.0)
+      '@eslint-community/eslint-utils': 4.7.0(eslint@9.33.0(supports-color@8.1.1))
       '@eslint-community/regexpp': 4.12.1
-      '@eslint/config-array': 0.21.0
+      '@eslint/config-array': 0.21.0(supports-color@8.1.1)
       '@eslint/config-helpers': 0.3.1
       '@eslint/core': 0.15.2
-      '@eslint/eslintrc': 3.3.1
+      '@eslint/eslintrc': 3.3.1(supports-color@8.1.1)
       '@eslint/js': 9.33.0
       '@eslint/plugin-kit': 0.3.5
       '@humanfs/node': 0.16.6
@@ -2095,7 +2095,7 @@ snapshots:
       ajv: 6.12.6
       chalk: 4.1.2
       cross-spawn: 7.0.6
-      debug: 4.4.1
+      debug: 4.4.1(supports-color@8.1.1)
       escape-string-regexp: 4.0.0
       eslint-scope: 8.4.0
       eslint-visitor-keys: 4.2.1
@@ -2330,7 +2330,7 @@ snapshots:
     dependencies:
       schema-utils: 4.3.2
       tapable: 2.2.2
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
 
   minimatch@3.1.2:
     dependencies:
@@ -2340,14 +2340,15 @@ snapshots:
     dependencies:
       brace-expansion: 2.0.2
 
-  minimizer-webpack-plugin@5.6.1(postcss@8.5.6)(webpack@5.109.0):
+  minimizer-webpack-plugin@5.6.1(esbuild@0.19.12)(postcss@8.5.6)(webpack@5.109.0):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.30
       jest-worker: 27.5.1
       schema-utils: 4.3.2
       terser: 5.43.1
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
     optionalDependencies:
+      esbuild: 0.19.12
       postcss: 8.5.6
 
   ms@2.1.3: {}
@@ -2493,7 +2494,7 @@ snapshots:
       neo-async: 2.6.2
     optionalDependencies:
       sass: 1.90.0
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
 
   sass@1.90.0:
     dependencies:
@@ -2533,12 +2534,11 @@ snapshots:
 
   shebang-regex@3.0.0: {}
 
-  siyuan@1.2.3:
+  siyuan@git+https://github.com/siyuan-note/petal.git#0d02f3d0c275282b8a89e5b5c28335128a3209ce:
     dependencies:
-      '@dop251/types-goja_nodejs-buffer': 0.0.0-20260212111938-1f56ff5bcf14
-      '@dop251/types-goja_nodejs-global': 0.0.0-20260212111938-1f56ff5bcf14
-      '@dop251/types-goja_nodejs-url': 0.0.0-20260212111938-1f56ff5bcf14
-      zod: 4.4.3
+      '@dop251/types-goja_nodejs-buffer': 0.0.0-20260918183711-b481721df8a2
+      '@dop251/types-goja_nodejs-global': 0.0.0-20260918183711-b481721df8a2
+      '@dop251/types-goja_nodejs-url': 0.0.0-20260918183711-b481721df8a2
 
   slash@4.0.0: {}
 
@@ -2624,7 +2624,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
       webpack-merge: 5.10.0
 
   webpack-merge@5.10.0:
@@ -2640,7 +2640,7 @@ snapshots:
 
   webpack-sources@3.5.1: {}
 
-  webpack@5.109.0(postcss@8.5.6)(webpack-cli@5.1.4):
+  webpack@5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4):
     dependencies:
       '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
@@ -2656,7 +2656,7 @@ snapshots:
       events: 3.3.0
       graceful-fs: 4.2.11
       mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.6.1(postcss@8.5.6)(webpack@5.109.0)
+      minimizer-webpack-plugin: 5.6.1(esbuild@0.19.12)(postcss@8.5.6)(webpack@5.109.0)
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3
@@ -2694,8 +2694,6 @@ snapshots:
 
   zip-webpack-plugin@4.0.3(webpack-sources@3.5.1)(webpack@5.109.0):
     dependencies:
-      webpack: 5.109.0(postcss@8.5.6)(webpack-cli@5.1.4)
+      webpack: 5.109.0(esbuild@0.19.12)(postcss@8.5.6)(webpack-cli@5.1.4)
       webpack-sources: 3.5.1
       yazl: 2.5.1
-
-  zod@4.4.3: {}
