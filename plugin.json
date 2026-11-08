@@ -2,8 +2,8 @@
   "name": "move-doc",
   "author": "Jeffrey Chen",
   "url": "https://github.com/TCOTC/move-doc",
-  "version": "1.0.1",
-  "minAppVersion": "3.8.1-beta.3",
+  "version": "1.0.2",
+  "minAppVersion": "3.8.10-beta.5",
   "backends": [
     "all"
   ],

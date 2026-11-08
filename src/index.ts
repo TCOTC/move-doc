@@ -5,6 +5,7 @@ import {
     getActiveEditor,
     expandDocTree,
     showMessage,
+    type FileTreeFile,
     type IEventBusMap,
 } from "siyuan";
 import "./index.scss";
@@ -31,7 +32,7 @@ type MoveDocTarget = {
     /** 目标文档 ID，目标列表为空时用于直接移动 */
     docId?: string;
     /** 目标子文档列表当前生效的排序方式 */
-    listSortMode: number;
+    listSortMode: number | undefined;
 };
 
 /** 排序锚点：error 为 true 表示列表读取失败，anchorId 为空表示目标列表为空 */
@@ -233,7 +234,7 @@ export default class PluginSample extends Plugin {
         fromID: string,
         targetDocPath: string,
         targetNotebookId: string,
-        listSortMode: number,
+        listSortMode: number | undefined,
     ): Promise<void> => {
         const parentListPath = this.getParentListPath(targetDocPath);
         const parentId = this.getParentTargetId(targetDocPath, targetNotebookId);
@@ -260,7 +261,7 @@ export default class PluginSample extends Plugin {
         notebookId: string,
         listPath: string,
         fallbackTargetId: string,
-        listSortMode: number,
+        listSortMode: number | undefined,
     ): Promise<boolean> => {
         if (listSortMode !== SORT_MODE_CUSTOM) {
             return await this.moveDocByID(fromID, fallbackTargetId);
@@ -373,7 +374,8 @@ export default class PluginSample extends Plugin {
             return { error: true };
         }
 
-        const files: { id: string }[] = res.data?.files ?? [];
+        // files 的元素可能为 null，先过滤再取首尾
+        const files = (res.data?.files ?? []).filter((file): file is FileTreeFile => file !== null);
         if (files.length === 0) {
             return { error: false };
         }
@@ -385,13 +387,9 @@ export default class PluginSample extends Plugin {
         const editor = getActiveEditor(false);
         const protyle = editor?.protyle;
         if (!protyle || !protyle.block?.rootID || !protyle.path || !protyle.notebookId) return null;
-        // 桌面端从 protyle 的标题元素获取文档名称；移动端 render.titleShowTop 为 true，标题显示在顶栏，
-        // protyle 内不生成标题元素，改用内核下发的文档属性标题，再回退到顶栏标题，空标题时回退为“未命名文档”
-        const ialTitle = protyle.background?.ial?.title;
-        const name = protyle.title?.editElement?.textContent
-            || (typeof ialTitle === "string" ? ialTitle : "")
-            || (document.getElementById("toolbarName") as HTMLInputElement | null)?.value
-            || window.siyuan.languages._kernel[16] || "";
+        // 桌面端取 protyle 标题元素，实时反映编辑中的标题；移动端 render.titleShowTop 为 true，标题显示在顶栏，
+        // protyle 内不生成标题元素，getText() 返回 setTitle() 记录的文档标题，空标题时回退为“未命名文档”
+        const name = protyle.title?.getText() || window.siyuan.languages._kernel[16] || "";
         return {
             id: protyle.block.rootID,
             path: protyle.path,
