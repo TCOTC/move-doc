@@ -1,4 +1,3 @@
-Right-click a single document or notebook in the document tree. In the pop-up menu under **Plugin**, you can act on the document of the currently active tab:
+# Move Current Doc
 
-- **Document**: Move above / below it (as a sibling), or move as its child
-- **Notebook**: Move under this notebook
+Source code: [TCOTC/siyuan-packages](https://github.com/TCOTC/siyuan-packages/tree/main/plugins/move-doc). This repository only hosts Bazaar releases.
